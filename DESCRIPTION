@@ -1,6 +1,6 @@
 Package: GOCompare
 Title: Comprehensive GO Terms Comparison Between Species
-Version: 1.0.0
+Version: 1.0.1
 Authors@R: c(person("Chrystian Camilo", "Sosa",role = c("aut","cre","cph"), 
               comment = c(ORCID = "0000-0002-3734-3248"),
               email= "ccsosaa@javerianacali.edu.co"),
@@ -32,7 +32,7 @@ RoxygenNote: 7.1.2
 Suggests: testthat (>= 3.0.0)
 Config/testthat/edition: 3
 NeedsCompilation: no
-Packaged: 2021-12-03 21:18:20 UTC; cami_
+Packaged: 2022-04-29 22:46:21 UTC; cami_
 Author: Chrystian Camilo Sosa [aut, cre, cph]
     (<https://orcid.org/0000-0002-3734-3248>),
   Diana Carolina Clavijo-Buriticá [aut],
@@ -44,4 +44,4 @@ Author: Chrystian Camilo Sosa [aut, cre, cph]
   Andrés Álvarez [ctb]
 Maintainer: Chrystian Camilo Sosa <ccsosaa@javerianacali.edu.co>
 Repository: CRAN
-Date/Publication: 2021-12-06 08:10:05 UTC
+Date/Publication: 2022-04-29 23:10:02 UTC
