@@ -11,7 +11,8 @@ graphGOspecies(
   option = "Categories",
   numCores = 2,
   saveGraph = FALSE,
-  outdir = NULL
+  outdir = NULL,
+  filename = NULL
 )
 }
 \arguments{
@@ -29,36 +30,76 @@ a graph where nodes are features and edges are GO terms (default value="Categori
 
 \item{outdir}{This parameter will allow save the graph file in a folder described here (e.g: "D:").This parameter only
 works when saveGraph=TRUE}
+
+\item{filename}{The name of the graph filename to be saved in the outdir detailed by the user.This parameter only
+works when saveGraph=TRUE}
 }
 \value{
-This function will return a list with two slots: edges and nodes. Edges represents an edge list and their weights and
- nodes which represents the nodes and their respective weights
+This function will return a list with two slots: edges and nodes.
+
+ (Categories):
+  Edges list columns:
+  \tabular{rr}{
+  Column \tab Description \cr
+  SOURCE and TARGET \tab The source and target categories (Nodes in the edge) \cr
+  FEATURES_N \tab The number of GO terms between the categories \cr
+  WEIGHT \tab Edge weight \cr
+  FEATURES \tab GO terms available for both nodes \cr
+  }
+
+  Node list columns:
+  \tabular{rr}{
+  Column \tab Description \cr
+  feature\tab Category name \cr
+  GO_count  \tab GO terms counts for the node \cr
+  WEIGHT  \tab Node weight \cr
+  }
+
+ (GO):
+
+  Edges list columns:
+  \tabular{rr}{
+  Column \tab Description \cr
+  SOURCE and TARGET \tab The source and target GO terms (Nodes in the edge) \cr
+  FEATURE \tab The number of Categories where both GO Terms were found \cr
+  WEIGHT \tab Edge weight \cr
+  }
+  Node list columns:
+
+  \tabular{rr}{
+  Column \tab Description \cr
+  GO \tab GO term node name \cr
+  GO_WEIGHT \tab Node weight \cr
+  }
 }
 \description{
 graphGOspecies is a function to create undirected graphs using two options:
+ \loadmathjax
 
-1.) Nodes are GO terms such as biological processes and the edges are features.
- First, edges weights  are calculated as the intersection where cat(U) n cat(V) represents
- categories where the GO terms U and V are. While nBP is the total number of biological processes
- represented by the GO terms (1).Finally node weights are calculated as sum of all w(e) where the node is participant (2)
- (Please be patient, it requires a long time to finish).
- \deqn{w(e) = \frac{|cat(U) n cat(V)|}{|nBP|}}{%
- w(e) = |cat(U) n cat(V)| / |nBP| (1)}
+ Categories option:
+
+ The nodes \mjseqn{(V)} represent groups of gene lists (categories), and the edges \mjseqn{(E)} represent GO terms co-occurring between pairs of categories. More specifically,
+ Two categories: \mjseqn{u,v \epsilon V } are connected by an edge \mjseqn{e=(u,v)}.the edge weights \mjseqn{w(e)} are defined as the ratio of the number of GO terms co-occurring
+ between two categories. Edge weights w(e) are defined as the ratio of the number of GO terms (e.g. biological processes) co-occurring between two categories
+  \mjseqn{BP_{u} \ n  BP_{v}} compared to the total number of GO terms available.
+ A node weight \mjseqn{K_{w}(u)} is defined as the sum of the edge weights where the node u is a participant. Thus, the node weight represents how frequently
+  GO terms are reported and expressed in a biological phenomenon.
+
+ \mjsdeqn{w(e) = \frac{\mid BP_{u} n {BP_{v}}\mid}{\mid BP\mid}} (1)
+
+ \mjsdeqn{K_{w} = \sum_{{v} \epsilon {V}}{w(u,v)}} (2)
 
 
- \deqn{K_w(U) = \sum(w(U,V))}{%
- K_w(U) = sum(w(U,V)) (2)}
+ GO option:
 
+ The nodes \mjseqn{{V}} represent GO terms and the edges \mjseqn{{E}'} represent categories where a pair of GO terms co-occur. More specifically,
+ two GO terms are connected by an edge \mjseqn{{e}'=({u},{v}')}. the edge weight \mjseqn{{w}'({e}')} corresponds to the number of categories co-occurring
+  the GO terms \mjseqn{{u}} and \mjseqn{{v}'},compared with the total number of GO terms (Equation 3). A node weight \mjseqn{{K}'_w({u}')} is defined,in this case the weight
+ represents the importance of a GO term (more frequent co-occurring).(Please be patient, it requires a long time to finish).
 
-2.) Nodes are features, the edges are the number of GO terms such as biological processes in your gene lists.
-In this case the edge weights are calculated as the number of biological processes shared by a category expressed as BP(U) n BP(V)
-nBP is the total number of biological processes (3). FInally, the node weights is calculated as the sum of all w(e) where the node is participant (4)
+ \mjsdeqn{{w}'({e}')=\frac{\mid{Cu}'\cap  {Cv}'\mid}{\mid BP \mid}} (3)
 
- \deqn{w(e) = \frac{|BP(U) n BP(V)|}{|nBP|}}{%
- w(e) = |BP(U) n BP(V)| / |nBP| (3)}
-
- \deqn{K_w(U) = \sum(w(U,V))}{%
- K_w(U) = sum(w(U,V)) (4)}
+ \mjsdeqn{{K}'_w({u}')=\sum_{{v}'\epsilon {V}'}{{w}'({u}',{v}')}} (4)
 }
 \examples{
 
@@ -73,6 +114,7 @@ x <- graphGOspecies(df=H_sapiens_compress,
                      option = "Categories",
                      numCores=1,
                      saveGraph=FALSE,
-                     outdir = NULL)
+                     outdir = NULL,
+                     filename=NULL)
 
 }
